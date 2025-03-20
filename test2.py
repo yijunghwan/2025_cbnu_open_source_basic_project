@@ -1,6 +1,6 @@
 # 충북대학교 2학년 2022041022 이정환
 #
-# 2025년 3월 21일
+# 2025년 3월 
 #
 #5명의 학생의 세개의 교과목 (영어, C-언어, 파이썬)에 대하여  키보드로부터 입력받아 총점, 평균, 학점, 등수를 계산하는 프로그램
 #
@@ -105,7 +105,6 @@ class student_linked_list:
 
 #학생수 과목수 과목이름을 받아 기입하고 리턴하는 함수
 def input_information(student_num,subject_num,subject_name):
-    print("")
     s = student_linked_list(subject_num,subject_name)
     for i in range(student_num-1):
          s.new_student_append(subject_num,subject_name)
