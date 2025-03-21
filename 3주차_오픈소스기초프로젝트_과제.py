@@ -5,7 +5,7 @@
 #5명의 학생의 세개의 교과목 (영어, C-언어, 파이썬)에 대하여  키보드로부터 입력받아 총점, 평균, 학점, 등수를 계산하는 프로그램
 #
 # - 입력 함수, 총점/평균 계산 함수,  학점계산 함수, 등수계산 함수, 출력 함수로 나누어 구현
-#학생 객체 생성
+
 
 
 import sys#정수 입력 최대값을 구하기위해 import
@@ -16,7 +16,9 @@ def main():
     STUDENT_NUM = 5#학생수
     SUBJECT_NUM = 3#과목수
     SUBJECT_NAME=("영어","C-언어","python")#과목명
-    student_head = input_information(STUDENT_NUM,SUBJECT_NUM,SUBJECT_NAME)
+    if(STUDENT_NUM>0):
+        student_head = student_linked_list(SUBJECT_NUM,SUBJECT_NAME)
+    input_information(STUDENT_NUM,SUBJECT_NUM,SUBJECT_NAME,student_head)
     student_head.all_stundent_rank_counting()
     student_head.all_print_stundent_information()
 
@@ -49,7 +51,7 @@ class student:
         print("""
 ============================================================================================================================
 
-{:<20}{:<15}{:<10}{:<10}{:<10}{:<10}{:<10}{:<10}{} 
+{:<20}{:<15}{:<8}{:<8}{:<8}{:<8}{:<8}{:<8}{} 
 
 ============================================================================================================================
 
@@ -103,13 +105,12 @@ class student_linked_list:
 
 
 
-#학생수 과목수 과목이름을 받아 기입하고 리턴하는 함수
-def input_information(student_num,subject_num,subject_name):
+#학생수 과목수 과목이름을 받아 원하는 학생수 만큼 추가하는 함수
+def input_information(student_num,subject_num,subject_name,s):
     print("")
-    s = student_linked_list(subject_num,subject_name)
     for i in range(student_num-1):
          s.new_student_append(subject_num,subject_name)
-    return s
+    return 0
 
 
 
