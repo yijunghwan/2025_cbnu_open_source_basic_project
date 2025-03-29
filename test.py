@@ -1,62 +1,107 @@
-import sys
+import math
 
-def main():
-    STUDENT_NUM = 5
-    SUBJECTS_NUM = 3
-    SUBJECTS_NAME=["영어","수학","ㅁㅁㅁ"]
-    s=a(SUBJECTS_NUM,SUBJECTS_NAME)
-    return 0
+# 틱택토 보드 초기화
+board = [' ' for _ in range(9)]
 
+# 보드 출력 함수
+def print_board():
+    for row in [board[i:i + 3] for i in range(0, 9, 3)]:
+        print('| ' + ' | '.join(row) + ' |')
 
-class a:
-    def __init__(self,subject_num,subject_name):
-        self.next = None
-        #self.student_number = input_and_test(input("학번 : "),sys.maxsize)
-        #self.name = input ("이름 : ")
-        self.score= list()
-        self.total_score = 0
-        for i in range(subject_num):
-            print(subject_name[i]," : ")
-            self.score.append (input_and_test(input(),100))
-            self.total_score += self.score[i] 
-        self.averge_score = int(round(self.total_score/3)) #round로 평균의 소수점은 반올림처리
-        print(self.total_score)
-        #self.averge_grade = grade_couting(self.averge_grade)
-        
-class student:
-    def __init__(self,subjects_num,subject_name):#학생 객체 기본정보
-        self.next = None
-        self.student_number = input_and_test(input("학번 : "),sys.maxsize)
-        self.name = input ("이름 : ")
-        self.score= list()
-        self.total_score = 0
-        for i in subject_name:
-            print(subject_name[i]," : ")
-            self.score.append (input_and_test(input(),100))
-        #    self.total_score += self.score[i] 
-        #self.averge_score = int(round(self.total_score/3)) #round로 평균의 소수점은 반올림처리
-        #self.averge_grade = grade_couting(self.averge_grade)
-    
-    #def rank(self,s_h,h): #자기 자신과 링크드리스트의 헤더를 받아 순위를 메기는 메서드
-        #self.ranked = rank_couting(s_h,h)
+# 승리 조건 확인 함수
+def check_winner():
+    win_conditions = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],  # 가로
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],  # 세로
+        [0, 4, 8], [2, 4, 6]             # 대각선
+    ]
+    for condition in win_conditions:
+        if board[condition[0]] == board[condition[1]] == board[condition[2]] != ' ':
+            return board[condition[0]]
+    return None
 
-    #def grapic(self):
-        #print("1")
+# Minimax 알고리즘
+def minimax(is_maximizing):
+    winner = check_winner()
+    if winner == 'X':
+        return -1
+    elif winner == 'O':
+        return 1
+    elif ' ' not in board:
+        return 0
 
-#값과 값의 범위를 받아 확인 및 값을 다시 받는 함수
-def input_and_test(s,num):
-    while 1:
-        #unsigedint 확인
-        if(s.isdecimal()):
-            s=int(s)
-            #범위 확인
-            if((s>=0)and(s<=num)):
-                 break
-            else:
-                 print("오류! 입력된 숫자가 너무 많습니다 적정숫자: 0~",num," 다시 입력하시오.")    
-        else:
-            print("오류! 입력이 usiged int 자료형만 가능합니다. 다시 입력하시오.")
-        s = input()
-    return s
+    if is_maximizing:
+        best_score = -math.inf
+        for i in range(9):
+            if board[i] == ' ':
+                board[i] = 'O'
+                score = minimax(False)
+                board[i] = ' '
+                best_score = max(best_score, score)
+        return best_score
+    else:
+        best_score = math.inf
+        for i in range(9):
+            if board[i] == ' ':
+                board[i] = 'X'
+                score = minimax(True)
+                board[i] = ' '
+                best_score = min(best_score, score)
+        return best_score
 
-main()
+# AI의 최적 움직임 결정
+def ai_move():
+    best_score = -math.inf
+    move = None
+    for i in range(9):
+        if board[i] == ' ':
+            board[i] = 'O'
+            score = minimax(False)
+            board[i] = ' '
+            if score > best_score:
+                best_score = score
+                move = i
+    board[move] = 'O'
+
+# 게임 시작
+def play_game():
+    print("틱택토: 당신은 X, AI는 O입니다.")
+    print_board()
+
+    while True:
+        # 사용자 입력
+        try:
+            user_move = int(input("당신의 움직임 (0-8): "))
+            if board[user_move] != ' ':
+                print("이미 채워진 자리입니다. 다시 선택해주세요.")
+                continue
+            board[user_move] = 'X'
+        except (ValueError, IndexError):
+            print("유효하지 않은 입력입니다. 0에서 8 사이의 숫자를 입력해주세요.")
+            continue
+
+        print_board()
+
+        # 승리 확인
+        if check_winner() == 'X':
+            print("축하합니다! 당신이 승리했습니다!")
+            break
+        if ' ' not in board:
+            print("무승부입니다!")
+            break
+
+        # AI 움직임
+        print("AI의 차례입니다...")
+        ai_move()
+        print_board()
+
+        # 승리 확인
+        if check_winner() == 'O':
+            print("AI가 승리했습니다!")
+            break
+        if ' ' not in board:
+            print("무승부입니다!")
+            break
+
+# 게임 실행
+play_game()
