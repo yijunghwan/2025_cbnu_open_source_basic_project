@@ -242,8 +242,8 @@ class student_linked_list:
 
     def all_stundent_rank_counting(self):#모든 학생 순위 메기는 메서드 
         rank_couting_student = self.head
-        temp_s = self.head#임시 노드 생성 (헤더노드부터 시작)
         while 1:
+            temp_s = self.head
             r = 1#최소 1순위 이니 기본값을 1로 설정
             while 1:
                 if (rank_couting_student.total_score < temp_s.total_score):#순위를 측정할 노드에 임시 헤더를 비교
