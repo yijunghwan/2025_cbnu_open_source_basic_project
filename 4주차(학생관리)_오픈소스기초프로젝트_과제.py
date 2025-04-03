@@ -13,7 +13,7 @@
 #       - 삽입 함수, 삭제 함수, 탐색함수(학번, 이름), 정렬(총점)함수, 80점이상 학생 수 카운트 함수
 
 import os#cls 명령어 사용
-import time
+
 import sys #int의 최대값 사용()
 
 
@@ -125,10 +125,9 @@ class student:
     def grapic(self): #정보를 출력하는 메서드
         print("""-------------------------------------------
 학번:{} 이름:{}""".format(self.student_number,self.name))
-        for i in self.subject_name:#저장된 과목수 만큼 출력
+        for i,ii in zip(self.subject_name,range(len(self.subject_name))):#저장된 과목수 만큼 출력
             print(i,":",end='')
-            for ii in range(len(self.subject_name)):
-                print(self.score[ii])
+            print(self.score[ii])
         print("""총점:{}
 평균:{}
 학점:{}
@@ -151,6 +150,7 @@ class student_linked_list:#링크드 리스트
     #매개변수 linked_list : 정보를 수정할 링크드리스트의 헤드 노드
     def student_in(self,linked_list):#정보 수정 메뉴 메서드
         set = True
+
         while set:
             print("현재 총 학생 수:",self.num,"\n")#현재 학생수 현황 출력
             set = input_and_test(input("""
@@ -199,18 +199,14 @@ class student_linked_list:#링크드 리스트
     #매개변수 s_num:삭제할 노드 번호
     def in_pop(self,s_num):#노드 삭제 메서드 !!!입력시 노드 오버 문제주의
         temp=self.head#임시 노드 생성
-        pop_node = None#삭제할 노드 생성 (메모리 누수방지)
         if s_num == 0:#취소를 입력받을시 메서드 종료
              return 0
         if s_num == 1:#헤드노드 삭제시 헤드노드 변경
-            pop_node=self.head
-            self.head=self.head.next
+            self.head=self.head.next#헤드노드 변경
         else:#삭제할 노드의 앞노드와 뒷노드 연결
             for i in range(s_num-2):
-                temp = temp.next
-            pop_node = temp.next
-            temp = temp.next.next
-        del pop_node#노드 삭제(메모리 누수 방지)
+                temp = temp.next#앞노드 찾기
+            temp.next = temp.next.next#삭제할 노드의 뒷노드와 연결
         self.num -= 1#총 학생수 -1
         os.system('cls')
         print(s_num,"번째 학생의 정보는 삭제되었습니다!")
@@ -275,6 +271,9 @@ class student_linked_list:#링크드 리스트
     #매개변수 linked_list : 정보를 출력할 링크드리스트의 헤드 노드
     def student_print(self,linked_list):#출력 메뉴 메서드
         set = True
+        if None == linked_list.head:#헤드 노드가 없을경우
+            print("학생 정보가 없습니다.")
+            return 0
         linked_list.all_stundent_rank_counting()#출력전 순위 계산
         while set:
             print("현재 총 학생 수:",self.num,"\n")#현재 학생수 출력
