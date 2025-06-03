@@ -29,7 +29,7 @@ def create_database():# 데이터베이스 생성 함수
         connection = pymysql.connect(
             host='localhost',
             user='root',
-            password='비밀번호 자리',
+            password='your password',  # MySQL root 비밀번호
             charset='utf8mb4'
         )#사용자의 db에 맞추어 바꿔야함
         with connection.cursor() as cursor:
@@ -47,10 +47,10 @@ def connect_db():# 데이터베이스 연결 함수
         connection = pymysql.connect(
             host='localhost',       # MySQL 서버 주소
             user='root',            # 사용자 이름
-            password='5780ghks!',    # 비밀번호
+            password='your password',    # 비밀번호
             database='student_db',  # 데이터베이스 이름
             charset='utf8mb4'       # 문자셋
-        )
+        )#사용자의 db에 맞추어 바꿔야함
         return connection
     except Exception as e:
         print("DB 연결 실패:", e)
@@ -66,7 +66,7 @@ def menu(all):#메뉴 함수
                             0:종료
                             1:학생 정보 수정
                             2:학생 정보 출력
-                            3:학생 정보 db에 저장 (기능 미구현)
+                            3:학생 정보 db에 저장
                             """),3)
         if 0 == set:#종료
             os.system('cls')
@@ -104,7 +104,7 @@ def menu_start():#시작 메뉴 함수
                             1:초기 학생 정보 입력
                             2:초기 입력학생 수 수정(기본값: 5)
                             3:기본 입력 과목 수정 (기본값: 영어 c언어 python 3개)
-                            4: db에서 학생정보 로드# 미구현
+                            4: db에서 학생정보 로드
                             """),4)
         if 0 == set:#종료
              print("정상종료")
